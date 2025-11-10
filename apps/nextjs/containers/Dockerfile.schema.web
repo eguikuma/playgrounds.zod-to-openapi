@@ -1,0 +1,7 @@
+FROM nginx:latest
+
+COPY ./containers/schema.web.default.html /usr/share/nginx/html/index.html
+
+EXPOSE 80
+
+CMD ["/bin/sh", "-c", "nginx -g 'daemon off;'"]

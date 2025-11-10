@@ -1,0 +1,66 @@
+services:
+  db:
+    container_name: app.db
+    image: postgres:15.1
+    restart: always
+    tty: true
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: local
+      TZ: Asia/Tokyo
+    ports:
+      - ${DB_PORT:-5432}:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  db.schema:
+    container_name: app.db.schema
+    build:
+      context: .
+      dockerfile: ./containers/Dockerfile.schema
+    command: >
+      java -jar schemaspy.jar -vizjs
+      -t pgsql
+      -db local 
+      -host db
+      -port 5432
+      -u postgres
+      -p password
+      -s public
+      -connprops allowPublicKeyRetrieval\\=true;useSSL\\=false
+    volumes:
+      - db.schema:/output
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db.schema.web:
+    container_name: app.db.schema.web
+    build:
+      context: .
+      dockerfile: ./containers/Dockerfile.schema.web
+    ports:
+      - ${DB_SCHEMA_WEB_PORT:-8888}:80
+    volumes:
+      - db.schema:/usr/share/nginx/html
+    depends_on:
+      - db.schema
+
+  openapi:
+    container_name: app.openapi
+    image: swaggerapi/swagger-ui
+    environment:
+      API_URL: openapi-docs.yml
+    volumes:
+      - ./nextjs-docs.yml:/usr/share/nginx/html/openapi-docs.yml
+    ports:
+      - "${OPENAPI_PORT:-9000}:8080"
+
+volumes:
+  db:
+  db.schema:

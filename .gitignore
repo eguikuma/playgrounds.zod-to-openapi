@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# lock files
+sources/package-lock.json
+apps/*/package-lock.json
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# os
+.DS_Store
+Thumbs.db
+
+# ide
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# environment
+.env
+.env.local
+.env.*.local
+
+# instructions
+*.md
+!README.md
+!SETUP.md
