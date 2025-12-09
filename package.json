@@ -1,0 +1,20 @@
+{
+  "name": "my.zod-to-openapi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root workspace for the zodocs monorepo",
+  "workspaces": [
+    "sources",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w sources",
+    "build:all": "npm run build -w sources && npm run build -w apps/nextjs",
+    "dev": "npm run dev -w apps/nextjs",
+    "ci": "npm run ci -w sources && npm run ci -w apps/nextjs",
+    "postinstall": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "name": "zodocs",
+  "version": "0.1.0",
+  "description": "A documentation generator for Zod schemas",
+  "license": "MIT",
+  "keywords": [
+    "zod",
+    "documentation",
+    "typescript",
+    "schema",
+    "openapi"
+  ],
+  "main": "build/index.js",
+  "module": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "package:deps": "ncu",
+    "package:update": "ncu -i",
+    "package:update:force": "ncu -u",
+    "with-env": "dotenv -e .env",
+    "format": "prettier --write \"./**/*.{ts,json,md}\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "tsc": "tsc --noEmit",
+    "test": "vitest run",
+    "ci": "npm run format && npm run lint:fix && npm run tsc && npm run build && npm run test"
+  },
+  "type": "module",
+  "bin": {
+    "zodocs": "./bin/zodocs.sh"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js",
+      "require": "./build/index.js"
+    }
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.2.0",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.2.3",
+    "es-toolkit": "^1.43.0",
+    "tsx": "^4.21.0",
+    "type-fest": "^5.3.1",
+    "yaml": "^2.8.2",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.0",
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unused-imports": "^4.3.0",
+    "npm-check-updates": "^19.2.0",
+    "prettier": "^3.7.4",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.50.0",
+    "vite-tsconfig-paths": "^6.0.2",
+    "vitest": "^4.0.16"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

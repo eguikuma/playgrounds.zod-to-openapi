@@ -1,0 +1,15 @@
+FROM eclipse-temurin:11-jdk AS builder
+
+RUN apt-get update && apt-get install -y fontconfig fonts-dejavu && \
+    wget -O schemaspy.jar https://github.com/schemaspy/schemaspy/releases/download/v6.2.4/schemaspy-6.2.4.jar && \
+    wget -O postgresql.jar https://jdbc.postgresql.org/download/postgresql-42.7.4.jar && \
+    rm -rf /var/lib/apt/lists/*
+
+FROM --platform=linux/amd64 schemaspy/schemaspy
+
+ENV TZ=Asia/Tokyo
+
+USER root
+
+COPY --from=builder schemaspy.jar /schemaspy.jar
+COPY --from=builder postgresql.jar /postgresql.jar
